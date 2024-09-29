@@ -71,9 +71,11 @@ let init len f =
   if len < 0 then invalid_arg "List.init" else
   init 0 (len - 1) f
 
-let rec flatten = function
-    [] -> []
-  | l::r -> l @ flatten r
+let[@tail_mod_cons] rec flatten = function
+  | [] -> []
+  | []::xs -> flatten xs
+  | [x]::xs -> x :: flatten xs
+  | (x::x'::xs)::ys -> x :: x' :: flatten (xs::ys)
 
 let concat = flatten
 
