@@ -158,6 +158,19 @@ let find_index p xs =
         if p x then Some i else aux (i+1) xs in
   aux 0 xs
 
+let find_with_index_aux p i xs =
+  match xs() with
+  | Nil -> 
+      None
+  | Cons (x, xs) ->
+      if p x then 
+        Some (i, x)
+      else
+        find_with_index_aux p (i+1) xs
+
+let[@inline] find_with_index p xs =
+  find_with_index_aux p i xs
+
 let rec find_map f xs =
   match xs() with
   | Nil ->
