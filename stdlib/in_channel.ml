@@ -66,6 +66,11 @@ let input_line ic =
   | s -> Some s
   | exception End_of_file -> None
 
+let rec in_channel_line_seq ic () =
+  match input_line ic with
+  | None -> Seq.Nil
+  | Some line -> Seq.Cons (line, in_channel_line_seq ic)
+
 let input = Stdlib.input
 
 external unsafe_input_bigarray :
