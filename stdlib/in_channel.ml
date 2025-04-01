@@ -197,6 +197,11 @@ let [@tail_mod_cons] rec input_lines ic =
   | line -> line :: input_lines ic
   | exception End_of_file -> []
 
+let rec input_lines_seq ic () =
+  match input_line ic with
+  | None -> Seq.Nil
+  | Some line -> Seq.Cons (line, input_lines_seq ic)
+
 let rec fold_lines f accu ic =
   match Stdlib.input_line ic with
   | line -> fold_lines f (f accu line) ic
